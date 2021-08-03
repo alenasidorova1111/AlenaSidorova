@@ -76,20 +76,19 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <maven-surefire-plugin.suiteXmlFile>${testng.configs.path}/testng/test.AddAndSubtractOperations.xml
-                </maven-surefire-plugin.suiteXmlFile>
+                <testng.suite.file>${testng.configs.path}/test.AddAndSubtractOperations.xml</testng.suite.file>
             </properties>
         </profile>
         <profile>
             <id>multiply-and-divide-operations-tests</id>
             <properties>
-                <testng.suite.file>${testng.configs.path}/testng/test.MultiplyAndDivideOperations.xml</testng.suite.file>
+                <testng.suite.file>${testng.configs.path}/test.MultiplyAndDivideOperations.xml</testng.suite.file>
             </properties>
         </profile>
         <profile>
             <id>all-tests</id>
             <properties>
-                <testng.suite.file>${testng.configs.path}/testng/test.all.xml</testng.suite.file>
+                <testng.suite.file>${testng.configs.path}/test.all.xml</testng.suite.file>
             </properties>
         </profile>
     </profiles>
