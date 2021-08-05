@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name = "addAndSubtractOperationsTestSuite">
+  <test name = "addAndSubtractOperationsTests">
+    <groups>
+      <run>
+        <include name="addAndSubtractOperationsTests"/>
+      </run>
+    </groups>
+    <packages>
+      <package name="com.epam.tc.hw1">
+      </package>
+    </packages>
+  </test>
+</suite>
