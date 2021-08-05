@@ -1,27 +1,15 @@
 package com.epam.tc.hw1;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import com.epam.tat.module4.Calculator;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class CalculatorAddOperationTesting {
-    protected Calculator calculator = new Calculator();
+public class CalculatorAddOperationTesting extends CalculatorOperationsTesting {
 
-    @DataProvider(name = "twoPositiveValues")
-    public Object[][] twoPositiveValues() {
-        return new Long[][] {
-            {1L, 2L},
-            {3L, 10L},
-            {1000L, 1L},
-        };
-    }
-
-    @Test(dataProvider = "twoPositiveValues", groups = {"addAndSubtractOperationsTests"})
-    public void testTwoPositiveValues(Long a, Long b) {
-        Long expected = a + b;
-        Long actual = calculator.sum(a, b);
-        assertEquals(expected, actual);
+    @Test(dataProvider = "twoPositiveValuesForAddOperationTests", dataProviderClass = DataProviders.class,
+          groups = {"addAndSubtractOperationsTests"})
+    public void testTwoPositiveValues(long a, long b, long expected) {
+        long actual = calculator.sum(a, b);
+        assertThat(actual).isEqualTo(expected);
     }
 }
