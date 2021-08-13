@@ -1,16 +1,23 @@
 package com.epam.tc.hw2.ex1;
 
-import com.epam.tc.hw2.WebdriverSettings;
+import com.epam.tc.hw2.BaseTest;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 
-public class GithubPageSeleniumTestsEx1 extends WebdriverSettings {
+public class GithubPageSeleniumTestsEx1 extends BaseTest {
+
+    protected SoftAssertions soft;
 
     @Test
     public void homePageTest() {
+        soft = new SoftAssertions();
+
         // 1. Open test site by URL
         webDriver.navigate().to("https://jdi-testing.github.io/jdi-light/index.html");
 
@@ -19,55 +26,46 @@ public class GithubPageSeleniumTestsEx1 extends WebdriverSettings {
 
         // 3. Perform login
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
-            webDriver.findElement(By.xpath("//*[@class='profile-photo'][1]")))).click();
+            webDriver.findElement(By.id("user-icon")))).click();
         webDriver.switchTo().activeElement();
         webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//input[@id='name'][1]")))).sendKeys("Roman");
+            webDriver.findElement(By.id("name")))).sendKeys("Roman");
         webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//input[@id='password'][1]")))).sendKeys("Jdi1234");
+            webDriver.findElement(By.id("password")))).sendKeys("Jdi1234");
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
-            webDriver.findElement(By.xpath("//button[@id='login-button'][1]")))).click();
+            webDriver.findElement(By.id("login-button")))).click();
 
         // 4. Assert Username is loggined
         String userName = webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//span[@id='user-name']")))).getText();
+            webDriver.findElement(By.id("user-name")))).getText();
         soft.assertThat(userName).isEqualTo("ROMAN IOVLEV");
 
         // 5. Assert that there are 4 items on the header section are displayed and they have proper texts
-        webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
-                webDriver.findElements(By.xpath("//ul[@class='uui-navigation nav navbar-nav m-l8'][1]/li"))));
-        List<WebElement> menuTabs = webDriver.findElements(
-            By.xpath("//ul[@class='uui-navigation nav navbar-nav m-l8'][1]/li"));
-        soft.assertThat(menuTabs.size()).isEqualTo(4);
-        soft.assertThat(menuTabs.get(0).getText()).isEqualTo("HOME");
-        soft.assertThat(menuTabs.get(1).getText()).isEqualTo("CONTACT FORM");
-        soft.assertThat(menuTabs.get(2).getText()).isEqualTo("SERVICE");
-        soft.assertThat(menuTabs.get(3).getText()).isEqualTo("METALS & COLORS");
+        List<WebElement> menuTabs = webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
+            webDriver.findElements(By.xpath("//ul[@class='uui-navigation nav navbar-nav m-l8'][1]/li"))));
+        soft.assertThat(menuTabs).hasSize(4);
+        soft.assertThat(menuTabs.stream().map(WebElement::getText).collect(Collectors.toList()))
+            .containsExactlyElementsOf(Arrays.asList("HOME", "CONTACT FORM", "SERVICE", "METALS & COLORS"));
 
         // 6. Assert that there are 4 images on the Index Page and they are displayed
-        webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
+        List<WebElement> images = webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
             webDriver.findElements(By.cssSelector(".benefit-icon"))));
-        List<WebElement> images = webDriver.findElements(By.cssSelector(".benefit-icon"));
-        soft.assertThat(images.size()).isEqualTo(4);
+        soft.assertThat(images).hasSize(4);
 
         // 7. Assert that there are 4 texts on the Index Page under icons and they have proper text
-        webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
+        List<WebElement> texts = webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
             webDriver.findElements(By.cssSelector(".benefit-txt"))));
-        List<WebElement> texts = webDriver.findElements(By.cssSelector(".benefit-txt"));
-        soft.assertThat(texts.get(0).getText()).isEqualTo("To include good practices\n"
-            + "and ideas from successful\n"
-            + "EPAM project");
-        soft.assertThat(texts.get(1).getText()).isEqualTo("To be flexible and\n"
-            + "customizable");
-        soft.assertThat(texts.get(2).getText()).isEqualTo("To be multiplatform");
-        soft.assertThat(texts.get(3).getText()).isEqualTo("Already have good base\n"
-            + "(about 20 internal and\n"
-            + "some external projects),\n"
-            + "wish to get more…");
+        soft.assertThat(texts.stream().map(WebElement::getText).collect(Collectors.toList()))
+            .containsExactlyElementsOf(
+                Arrays.asList("To include good practices\n" + "and ideas from successful\n" + "EPAM project",
+                "To be flexible and\n" + "customizable",
+                "To be multiplatform",
+                "Already have good base\n" + "(about 20 internal and\n" + "some external projects),\n"
+                    + "wish to get more…"));
 
         // 8. Assert that there is the iframe with “Frame Button” exist
         WebElement iframe = webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//iframe[@id='frame']"))));
+            webDriver.findElement(By.id("frame"))));
         soft.assertThat((iframe).isDisplayed()).isEqualTo(true);
 
         // 9. Switch to the iframe and check that there is “Frame Button” in the iframe
@@ -80,15 +78,13 @@ public class GithubPageSeleniumTestsEx1 extends WebdriverSettings {
 
         // 11. Assert that there are 5 items in the Left Section are displayed and they have proper text
         List<WebElement> leftMenu = webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
-            webDriver.findElements(By.xpath("//ul[@class='sidebar-menu left']/li/a"))));
-        soft.assertThat(leftMenu.size()).isEqualTo(5);
-        soft.assertThat(leftMenu.get(0).getText()).isEqualTo("Home");
-        soft.assertThat(leftMenu.get(1).getText()).isEqualTo("Contact form");
-        soft.assertThat(leftMenu.get(2).getText()).isEqualTo("Service");
-        soft.assertThat(leftMenu.get(3).getText()).isEqualTo("Metals & Colors");
-        soft.assertThat(leftMenu.get(4).getText()).isEqualTo("Elements packs");
+            webDriver.findElements(By.xpath("//ul[@class='sidebar-menu left'][1]/li/a"))));
+        soft.assertThat(leftMenu).hasSize(5);
+        soft.assertThat(leftMenu.stream().map(WebElement::getText).collect(Collectors.toList()))
+            .containsExactlyElementsOf(Arrays.asList("Home", "Contact form",
+                "Service", "Metals & Colors", "Elements packs"));
 
-        // 12. Close Browser !! MADE IN src\test\java\com\epam\tc\hw2\WebdriverSettings.java
+        // 12. Close Browser !! MADE IN src\test\java\com\epam\tc\hw2\BaseTest.java
 
         soft.assertAll();
     }

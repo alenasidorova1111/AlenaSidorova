@@ -2,8 +2,8 @@
 <suite name = "githubPageEx1Ex2TestSuite">
   <test name = "githubPageTestEx1Ex2Tests">
     <packages>
-      <package name="com.epam.tc.hw2">
-      </package>
+      <package name="com.epam.tc.hw2.ex1"/>
+      <package name="com.epam.tc.hw2.ex2"/>
     </packages>
   </test>
 </suite>

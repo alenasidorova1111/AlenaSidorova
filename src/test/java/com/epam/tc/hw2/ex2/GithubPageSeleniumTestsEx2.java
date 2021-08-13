@@ -1,16 +1,22 @@
 package com.epam.tc.hw2.ex2;
 
-import com.epam.tc.hw2.WebdriverSettings;
+import com.epam.tc.hw2.BaseTest;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 
-public class GithubPageSeleniumTestsEx2 extends WebdriverSettings {
+public class GithubPageSeleniumTestsEx2 extends BaseTest {
+
+    protected SoftAssertions soft;
 
     @Test
     public void differentElementsPageTest() {
+        soft = new SoftAssertions();
+
         // 1. Open test site by URL
         webDriver.navigate().to("https://jdi-testing.github.io/jdi-light/index.html");
 
@@ -19,18 +25,18 @@ public class GithubPageSeleniumTestsEx2 extends WebdriverSettings {
 
         // 3. Perform login
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
-            webDriver.findElement(By.xpath("//*[@class='profile-photo'][1]")))).click();
+            webDriver.findElement(By.id("user-icon")))).click();
         webDriver.switchTo().activeElement();
         webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//input[@id='name'][1]")))).sendKeys("Roman");
+            webDriver.findElement(By.id("name")))).sendKeys("Roman");
         webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//input[@id='password'][1]")))).sendKeys("Jdi1234");
+            webDriver.findElement(By.id("password")))).sendKeys("Jdi1234");
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
-            webDriver.findElement(By.xpath("//button[@id='login-button'][1]")))).click();
+            webDriver.findElement(By.id("login-button")))).click();
 
         // 4. Assert Username is loggined
         String userName = webDriverWait.until(ExpectedConditions.visibilityOf(
-            webDriver.findElement(By.xpath("//span[@id='user-name']")))).getText();
+            webDriver.findElement(By.id("user-name")))).getText();
         soft.assertThat(userName).isEqualTo("ROMAN IOVLEV");
 
         // 5. Open through the header menu Service -> Different Elements Page
@@ -52,7 +58,7 @@ public class GithubPageSeleniumTestsEx2 extends WebdriverSettings {
 
         // 8. Select in dropdown
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
-            webDriver.findElement(By.xpath("//select[@class='uui-form-element']")))).click();
+            webDriver.findElement(By.className("colors")))).click();
         webDriver.switchTo().activeElement();
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
             webDriver.findElement(By.xpath("//option[normalize-space()='Yellow']")))).click();
@@ -63,12 +69,10 @@ public class GithubPageSeleniumTestsEx2 extends WebdriverSettings {
         // - for dropdown there is a log row and value is corresponded to the selected value.
         List<WebElement> logRows = webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
             webDriver.findElements(By.xpath("//ul[@class='panel-body-list logs']/li"))));
-        soft.assertThat(logRows.get(0).getText()).contains("Yellow");
-        soft.assertThat(logRows.get(1).getText()).contains("Selen");
-        soft.assertThat(logRows.get(2).getText()).contains("Wind");
-        soft.assertThat(logRows.get(3).getText()).contains("Water");
+        soft.assertThat(logRows.stream().map(WebElement::getText).collect(Collectors.toList())).asString()
+            .containsSubsequence("Yellow", "Selen", "Wind", "Water");
 
-        // 10. Close Browser !! MADE IN src\test\java\com\epam\tc\hw2\WebdriverSettings.java
+        // 10. Close Browser !! MADE IN src\test\java\com\epam\tc\hw2\BaseTest.java
 
         soft.assertAll();
     }
