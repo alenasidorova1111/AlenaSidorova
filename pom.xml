@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.epam.tc</groupId>
@@ -21,6 +21,11 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle.version>8.42</checkstyle.version>
+        <selenium-java.version>3.141.59</selenium-java.version>
+        <slf4j-simple.version>1.7.30</slf4j-simple.version>
+        <aspectj.version>1.9.5</aspectj.version>
+        <webdrivermanager.version>4.4.3</webdrivermanager.version>
+        <allure-testng.version>2.14.0</allure-testng.version>
     </properties>
 
     <build>
@@ -61,10 +66,21 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <argLine>
+                        --illegal-access=permit
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
                     <suiteXmlFiles>
                         <suiteXmlFile>${testng.suite.file}</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -91,6 +107,24 @@
                 <testng.suite.file>${testng.configs.path}/test.all.xml</testng.suite.file>
             </properties>
         </profile>
+        <profile>
+            <id>github-page-test-ex1-ex2-tests</id>
+            <properties>
+                <testng.suite.file>${testng.configs.path}/test.GithubPageSeleniumEx1Ex2</testng.suite.file>
+            </properties>
+        </profile>
+        <profile>
+            <id>page-object-tests</id>
+            <properties>
+                <testng.suite.file>${testng.configs.path}/test.PageObject.xml</testng.suite.file>
+            </properties>
+        </profile>
+        <profile>
+            <id>page-object-allure-tests</id>
+            <properties>
+                <testng.suite.file>${testng.configs.path}/test.PageObjectAllure.xml</testng.suite.file>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencies>
@@ -107,11 +141,47 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-simple.version}</version>
+        </dependency>
+        <dependency>
             <groupId>calculator</groupId>
             <artifactId>calculatorapp</artifactId>
             <scope>system</scope>
             <version>1.0</version>
             <systemPath>${project.basedir}/src/main/resources/calculator-1.0.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure-testng.version}</version>
+        </dependency>
     </dependencies>
+
+    <reporting>
+        <excludeDefaults>true</excludeDefaults>
+        <plugins>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
+                <configuration>
+                    <reportVersion>${allure-testng.version}</reportVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
 </project>
