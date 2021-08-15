@@ -1,9 +1,9 @@
 package com.epam.tc.hw4.pages;
 
+import com.epam.tc.hw3.utils.ConfProperties;
 import com.epam.tc.hw4.components.BenefitSection;
 import com.epam.tc.hw4.components.HeaderMenu;
 import com.epam.tc.hw4.components.LeftMenu;
-import com.epam.tc.hw4.utils.ConfProperties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,10 +11,19 @@ import org.openqa.selenium.support.PageFactory;
 
 public class HomePage {
 
-    WebDriver webDriver;
-    private final HeaderMenu headerMenu;
-    private final LeftMenu leftMenu;
-    private final BenefitSection benefitSection;
+    public static final String URL = "https://jdi-testing.github.io/jdi-light/index.html";
+    protected WebDriver webDriver;
+    protected HeaderMenu headerMenu;
+    protected LeftMenu leftMenu;
+    protected BenefitSection benefitSection;
+
+    public HomePage(WebDriver webDriver) {
+        this.webDriver = webDriver;
+        headerMenu = new HeaderMenu(webDriver);
+        benefitSection = new BenefitSection(webDriver);
+        leftMenu = new LeftMenu(webDriver);
+        PageFactory.initElements(webDriver, this);
+    }
 
     @FindBy(xpath = "//iframe[@id='frame']")
     private WebElement interactiveFrame;
@@ -33,20 +42,8 @@ public class HomePage {
     @FindBy(xpath = "//a[contains(text(),'Different elements')]")
     private WebElement differentElementsButton;
 
-    public HomePage(WebDriver webDriver1) {
-        PageFactory.initElements(webDriver1, this);
-        this.webDriver = webDriver1;
-        headerMenu = new HeaderMenu(webDriver1);
-        benefitSection = new BenefitSection(webDriver1);
-        leftMenu = new LeftMenu(webDriver1);
-    }
-
-    public void login() {
-        signInIcon.click();
-        webDriver.switchTo().activeElement();
-        loginField.sendKeys(ConfProperties.getProperty("login"));
-        passwordField.sendKeys(ConfProperties.getProperty("password"));
-        signInButton.click();
+    public void openPage() {
+        webDriver.navigate().to(URL);
     }
 
     public String getPageTitle() {
@@ -83,6 +80,14 @@ public class HomePage {
 
     public void exitIFrame() {
         webDriver.switchTo().defaultContent();
+    }
+
+    public void login() {
+        signInIcon.click();
+        webDriver.switchTo().activeElement();
+        loginField.sendKeys(ConfProperties.getProperty("login"));
+        passwordField.sendKeys(ConfProperties.getProperty("password"));
+        signInButton.click();
     }
 
     public void goToDifferentElementsPage() {

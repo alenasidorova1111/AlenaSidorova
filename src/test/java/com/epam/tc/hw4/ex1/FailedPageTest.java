@@ -9,8 +9,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
 
 @Feature(value = "Home page")
-@Story(value = "User can login and use Home page elements")
-public class HomePageTest extends BaseTest {
+@Story(value = "User can not login and use Home page elements")
+public class FailedPageTest extends BaseTest {
 
     SoftAssertions soft = new SoftAssertions();
 
@@ -28,7 +28,7 @@ public class HomePageTest extends BaseTest {
         HomePage homePage = new HomePage(webDriver);
         homePage.openPage();
         homePage.login();
-        soft.assertThat(homePage.getUserName()).isEqualTo("ROMAN IOVLEV");
+        soft.assertThat(homePage.getUserName()).isEqualTo("ROMAN IOVUUUUULEV");
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.epam.tc.hw4.pages;
 
-import com.epam.tc.hw4.components.HeaderMenu;
-import com.epam.tc.hw4.components.LeftMenu;
+import com.epam.tc.hw3.components.HeaderMenu;
+import com.epam.tc.hw3.components.LeftMenu;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
@@ -60,16 +60,16 @@ public class DifferentElementsPage {
 
     public void chooseRadio(String radioName) {
         radioButtons.stream()
-                  .filter(i -> i.getText().contains(radioName))
-                  .collect(Collectors.toList()).get(0).click();
+                    .filter(i -> i.getText().contains(radioName))
+                    .collect(Collectors.toList()).get(0).click();
     }
 
     public void chooseDropdown(String color) {
         dropdown.click();
         webDriver.switchTo().activeElement();
         dropdownColors.stream()
-                    .filter(i -> i.getText().contains(color))
-                    .collect(Collectors.toList()).get(0).click();
+                      .filter(i -> i.getText().contains(color))
+                      .collect(Collectors.toList()).get(0).click();
     }
 
     public boolean findInLog(String elementName) {

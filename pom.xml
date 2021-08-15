@@ -88,9 +88,6 @@
     <profiles>
         <profile>
             <id>add-and-subtract-operations-tests</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <testng.suite.file>${testng.configs.path}/test.AddAndSubtractOperations.xml</testng.suite.file>
             </properties>
@@ -121,6 +118,9 @@
         </profile>
         <profile>
             <id>page-object-allure-tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <testng.suite.file>${testng.configs.path}/test.PageObjectAllure.xml</testng.suite.file>
             </properties>

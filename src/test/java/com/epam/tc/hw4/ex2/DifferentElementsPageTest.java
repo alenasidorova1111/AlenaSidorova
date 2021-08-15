@@ -5,51 +5,61 @@ import com.epam.tc.hw4.pages.HomePage;
 import com.epam.tc.hw4.utils.BaseTest;
 import com.epam.tc.hw4.utils.DataProvidersForPageObject;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import io.qameta.allure.Story;
+import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
 
 @Feature(value = "Different Elements page")
 @Story(value = "User can login, go to Different Elements page and choose its elements")
 public class DifferentElementsPageTest extends BaseTest {
 
-    @Test(dataProvider = "twoForcesMetalColor", dataProviderClass = DataProvidersForPageObject.class)
-    public void testDifferentElementsPage(String force1, String force2, String metal, String color) {
+    SoftAssertions soft = new SoftAssertions();
 
-        // 1. Open test site by URL
+    @Test
+    @Step("Check Home page title")
+    public void testHomePageTitle() {
         HomePage homePage = new HomePage(webDriver);
-
-        // 2. Assert Browser title
+        homePage.openPage();
         soft.assertThat(homePage.getPageTitle()).isEqualTo("Home Page");
+    }
 
-        // 3. Perform login
+    @Test
+    @Step("Check logging process was successful")
+    public void testLoginProcess() {
+        HomePage homePage = new HomePage(webDriver);
+        homePage.openPage();
         homePage.login();
-
-        // 4. Assert Username is loggined
         soft.assertThat(homePage.getUserName()).isEqualTo("ROMAN IOVLEV");
+    }
 
-        // 5. Open through the header menu Service -> Different Elements Page
+    @Test
+    @Step("Open Different Elements page and its title")
+    public void testDifferentElementsPageTitle() {
+        HomePage homePage = new HomePage(webDriver);
+        homePage.openPage();
+        homePage.goToDifferentElementsPage();
+        DifferentElementsPage dep = new DifferentElementsPage(webDriver);
+        soft.assertThat(dep.getPageTitle()).isEqualTo("Different Elements");
+    }
+
+    @Test(dataProvider = "twoForcesMetalColor", dataProviderClass = DataProvidersForPageObject.class)
+    @Step("Choose different elements and check they have log rows")
+    public void testDifferentElements(String force1, String force2, String metal, String color) {
+        HomePage homePage = new HomePage(webDriver);
+        homePage.openPage();
+        homePage.login();
         homePage.goToDifferentElementsPage();
         DifferentElementsPage dep = new DifferentElementsPage(webDriver);
 
-        // 6. Select checkboxes
         dep.chooseCheckBox(force1);
         dep.chooseCheckBox(force2);
-
-        // 7. Select radio
         dep.chooseRadio(metal);
-
-        // 8. Select in dropdown
         dep.chooseDropdown(color);
 
-        // 9. Assert that:
-        // - for each checkbox there is an individual log row and value is corresponded to the status of checkbox
-        // - for radio button there is a log row and value is corresponded to the status of radio button
-        // - for dropdown there is a log row and value is corresponded to the selected value.
-        dep.findInLog(force1);
-        dep.findInLog(force2);
-        dep.findInLog(metal);
-        dep.findInLog(color);
-
-        soft.assertAll();
+        soft.assertThat(dep.findInLog(force1)).isTrue();
+        soft.assertThat(dep.findInLog(force2)).isTrue();
+        soft.assertThat(dep.findInLog(metal)).isTrue();
+        soft.assertThat(dep.findInLog(color)).isTrue();
     }
 }
