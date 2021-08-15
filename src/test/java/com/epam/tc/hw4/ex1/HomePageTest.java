@@ -20,6 +20,7 @@ public class HomePageTest extends BaseTest {
         HomePage homePage = new HomePage(webDriver);
         homePage.openPage();
         soft.assertThat(homePage.getPageTitle()).isEqualTo("Home Page");
+        soft.assertAll();
     }
 
     @Test
@@ -29,6 +30,7 @@ public class HomePageTest extends BaseTest {
         homePage.openPage();
         homePage.login();
         soft.assertThat(homePage.getUserName()).isEqualTo("ROMAN IOVLEV");
+        soft.assertAll();
     }
 
     @Test
@@ -41,6 +43,7 @@ public class HomePageTest extends BaseTest {
         soft.assertThat(homePage.getHeaderMenu().getButtonName(1)).isEqualTo("CONTACT FORM");
         soft.assertThat(homePage.getHeaderMenu().getButtonName(2)).isEqualTo("SERVICE");
         soft.assertThat(homePage.getHeaderMenu().getButtonName(3)).isEqualTo("METALS & COLORS");
+        soft.assertAll();
     }
 
     @Test
@@ -50,6 +53,7 @@ public class HomePageTest extends BaseTest {
         homePage.openPage();
         soft.assertThat(homePage.getBenefitSection().benefitImages.size()).isEqualTo(4);
         soft.assertThat(homePage.getBenefitSection().checkAllImagesDisplayed()).isTrue();
+        soft.assertAll();
     }
 
     @Test
@@ -68,6 +72,7 @@ public class HomePageTest extends BaseTest {
         soft.assertThat(homePage.getBenefitSection().getBenefitText(3))
             .isEqualTo("Already have good base\n" + "(about 20 internal and\n"
                 + "some external projects),\n" + "wish to get more…");
+        soft.assertAll();
     }
 
     @Test
@@ -76,6 +81,7 @@ public class HomePageTest extends BaseTest {
         HomePage homePage = new HomePage(webDriver);
         homePage.openPage();
         soft.assertThat(homePage.getIFrame().isDisplayed()).isTrue();
+        soft.assertAll();
     }
 
     @Test
@@ -86,6 +92,7 @@ public class HomePageTest extends BaseTest {
         homePage.goToIFrame();
         soft.assertThat(homePage.getIFrameButton().isDisplayed()).isTrue();
         homePage.exitIFrame();
+        soft.assertAll();
     }
 
     @Test
@@ -100,6 +107,7 @@ public class HomePageTest extends BaseTest {
         soft.assertThat(homePage.getLeftMenu().getButtonName(2)).isEqualTo("Service");
         soft.assertThat(homePage.getLeftMenu().getButtonName(3)).isEqualTo("Metals & Colors");
         soft.assertThat(homePage.getLeftMenu().getButtonName(4)).isEqualTo("Elements packs");
+        soft.assertAll();
     }
 
 }

@@ -22,6 +22,7 @@ public class DifferentElementsPageTest extends BaseTest {
         HomePage homePage = new HomePage(webDriver);
         homePage.openPage();
         soft.assertThat(homePage.getPageTitle()).isEqualTo("Home Page");
+        soft.assertAll();
     }
 
     @Test
@@ -31,6 +32,7 @@ public class DifferentElementsPageTest extends BaseTest {
         homePage.openPage();
         homePage.login();
         soft.assertThat(homePage.getUserName()).isEqualTo("ROMAN IOVLEV");
+        soft.assertAll();
     }
 
     @Test
@@ -41,6 +43,7 @@ public class DifferentElementsPageTest extends BaseTest {
         homePage.goToDifferentElementsPage();
         DifferentElementsPage dep = new DifferentElementsPage(webDriver);
         soft.assertThat(dep.getPageTitle()).isEqualTo("Different Elements");
+        soft.assertAll();
     }
 
     @Test(dataProvider = "twoForcesMetalColor", dataProviderClass = DataProvidersForPageObject.class)
@@ -61,5 +64,6 @@ public class DifferentElementsPageTest extends BaseTest {
         soft.assertThat(dep.findInLog(force2)).isTrue();
         soft.assertThat(dep.findInLog(metal)).isTrue();
         soft.assertThat(dep.findInLog(color)).isTrue();
+        soft.assertAll();
     }
 }
