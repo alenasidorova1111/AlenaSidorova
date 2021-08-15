@@ -8,7 +8,7 @@ public class DataProvidersForPageObject {
     public static Object[][] twoForcesMetalColor() {
         return new Object[][] {
             {"Water", "Wind", "Selen", "Yellow"},
-            {"Fire", "Earth", "Bronze", "Red"},
+            {"Fire", "Earth", "Bronze", "Green"},
         };
     }
 }

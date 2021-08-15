@@ -14,7 +14,7 @@ public class BaseTest {
     public void prepareToTest(ITestContext context) {
         DriverService driverService = new WebDriverInjector().getDriverService();
         webDriver = driverService.setupDriver();
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
         context.setAttribute("webDriver", webDriver);
     }
 
