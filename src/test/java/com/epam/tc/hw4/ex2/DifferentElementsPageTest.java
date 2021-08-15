@@ -4,12 +4,15 @@ import com.epam.tc.hw4.pages.DifferentElementsPage;
 import com.epam.tc.hw4.pages.HomePage;
 import com.epam.tc.hw4.utils.BaseTest;
 import com.epam.tc.hw4.utils.DataProvidersForPageObject;
+import com.epam.tc.hw4.utils.TestFailureListener;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import org.assertj.core.api.SoftAssertions;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+@Listeners({TestFailureListener.class})
 @Feature(value = "Different Elements page")
 @Story(value = "User can login, go to Different Elements page and choose its elements")
 public class DifferentElementsPageTest extends BaseTest {
@@ -40,6 +43,7 @@ public class DifferentElementsPageTest extends BaseTest {
     public void testDifferentElementsPageTitle() {
         HomePage homePage = new HomePage(webDriver);
         homePage.openPage();
+        homePage.login();
         homePage.goToDifferentElementsPage();
         DifferentElementsPage dep = new DifferentElementsPage(webDriver);
         soft.assertThat(dep.getPageTitle()).isEqualTo("Different Elements");

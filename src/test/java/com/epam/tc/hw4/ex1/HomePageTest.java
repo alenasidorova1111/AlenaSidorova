@@ -2,12 +2,15 @@ package com.epam.tc.hw4.ex1;
 
 import com.epam.tc.hw4.pages.HomePage;
 import com.epam.tc.hw4.utils.BaseTest;
+import com.epam.tc.hw4.utils.TestFailureListener;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import org.assertj.core.api.SoftAssertions;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+@Listeners({TestFailureListener.class})
 @Feature(value = "Home page")
 @Story(value = "User can login and use Home page elements")
 public class HomePageTest extends BaseTest {
