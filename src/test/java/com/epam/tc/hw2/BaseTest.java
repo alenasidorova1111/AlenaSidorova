@@ -13,7 +13,7 @@ public class BaseTest {
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
-        WebDriverManager.chromedriver().driverVersion("92.0.4515.107").setup();
+        WebDriverManager.chromedriver().setup();
         webDriver = new ChromeDriver();
         webDriver.manage().window().maximize();
         webDriverWait = new WebDriverWait(webDriver, 10);
