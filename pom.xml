@@ -119,11 +119,17 @@
         </profile>
         <profile>
             <id>page-object-allure-tests</id>
+            <properties>
+                <testng.suite.file>${testng.configs.path}/test.PageObjectAllure.xml</testng.suite.file>
+            </properties>
+        </profile>
+        <profile>
+            <id>cucumber-tests</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <testng.suite.file>${testng.configs.path}/test.PageObjectAllure.xml</testng.suite.file>
+                <testng.suite.file>${testng.configs.path}/test.CucumberSuite.xml</testng.suite.file>
             </properties>
         </profile>
     </profiles>

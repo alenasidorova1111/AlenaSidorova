@@ -15,18 +15,6 @@ public class AbstractPage extends AbstractComponent {
         headerMenu = new HeaderMenu(webDriver);
     }
 
-    public CatalogComponent openCatalog() {
-        return header.openCatalog();
-    }
-
-    public void sendKeysToSearchInputField(String searchText) {
-        header.sendKeysToSearchInputField(searchText);
-    }
-
-    public void clickToSearchButton() {
-        header.clickToSearchButton();
-    }
-
     protected void open(String url) {
         webDriver.navigate().to(BASE_URL + url);
     }
