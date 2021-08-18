@@ -36,14 +36,6 @@ public class HomePage extends AbstractPage {
         open("index.html");
     }
 
-    public void login() {
-        signInIcon.click();
-        webDriver.switchTo().activeElement();
-        loginField.sendKeys(DataProviderForCucumberTests.getProperty("login"));
-        passwordField.sendKeys(DataProviderForCucumberTests.getProperty("password"));
-        signInButton.click();
-    }
-
     public HeaderMenu getHeaderMenu() {
         return headerMenu;
     }

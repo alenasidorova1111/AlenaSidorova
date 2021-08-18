@@ -10,3 +10,7 @@ target
 *.iml
 
 .idea
+
+# Allure
+.allure
+allure-results

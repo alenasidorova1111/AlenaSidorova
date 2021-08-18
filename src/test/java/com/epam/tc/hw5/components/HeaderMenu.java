@@ -4,6 +4,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
 import com.epam.tc.hw5.pages.DifferentElementsPage;
+import com.epam.tc.hw5.utils.DataProviderForCucumberTests;
 import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,6 +16,18 @@ public class HeaderMenu extends AbstractComponent {
     public List<WebElement> headerButtons;
     @FindBy(xpath = "//ul[@role='menu']/li")
     public List<WebElement> serviceMenuButtons;
+    @FindBy(xpath = "//*[@class='profile-photo'][1]")
+    private WebElement signInIcon;
+    @FindBy(xpath = "//input[@id='name'][1]")
+    private WebElement loginField;
+    @FindBy(xpath = "//input[@id='password'][1]")
+    private WebElement passwordField;
+    @FindBy(xpath = "//button[@id='login-button'][1]")
+    private WebElement signInButton;
+    @FindBy(xpath = "//span[@id='user-name']")
+    private WebElement userName;
+    @FindBy(xpath = "//a[contains(text(),'Different elements')]")
+    private WebElement differentElementsButton;
 
     public HeaderMenu(WebDriver webDriver) {
         super(webDriver);
@@ -34,5 +47,13 @@ public class HeaderMenu extends AbstractComponent {
         clickButton(headerButtons, "SERVICE");
         clickButton(serviceMenuButtons, "DIFFERENT ELEMENTS");
         return new DifferentElementsPage(webDriver);
+    }
+
+    public void login() {
+        signInIcon.click();
+        webDriver.switchTo().activeElement();
+        loginField.sendKeys(DataProviderForCucumberTests.getProperty("login"));
+        passwordField.sendKeys(DataProviderForCucumberTests.getProperty("password"));
+        signInButton.click();
     }
 }

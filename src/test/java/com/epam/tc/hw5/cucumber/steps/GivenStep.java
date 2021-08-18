@@ -11,7 +11,7 @@ public class GivenStep extends AbstractStep {
 
     @Given("I perform login")
     public void login() {
-        homePage.login();
+        homePage.getHeaderMenu().login();
     }
 
     @Given("I navigate to Different Elements page through header menu")
