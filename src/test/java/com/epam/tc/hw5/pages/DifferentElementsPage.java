@@ -2,7 +2,6 @@ package com.epam.tc.hw5.pages;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
-import com.epam.tc.hw5.components.HeaderMenu;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
@@ -12,30 +11,25 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class DifferentElementsPage extends AbstractPage {
 
-    @FindBy(xpath = "//*[@class='profile-photo'][1]")
-    private WebElement signInIcon;
-    @FindBy(xpath = "//span[@id='user-name']")
-    private WebElement userName;
     @FindBy(css = ".label-checkbox")
     private List<WebElement> checkBoxes;
     @FindBy(css = ".label-radio")
     private List<WebElement> radioButtons;
-    @FindBy(xpath = "//select[@class='uui-form-element']")
+    @FindBy(tagName = "select")
     private WebElement dropdown;
     @FindBy(tagName = "option")
     private List<WebElement> dropdownColors;
-    @FindBy(xpath = "//ul[@class='panel-body-list logs']/li")
+    @FindBy(className = "info-panel-section")
+    private List<WebElement> logSection;
+    @FindBy(css = ".panel-body-list.logs")
     private List<WebElement> logRows;
-
-    private final HeaderMenu headerMenu;
 
     public DifferentElementsPage(WebDriver webDriver) {
         super(webDriver);
-        this.headerMenu = new HeaderMenu(webDriver);
     }
 
     public List<WebElement> getLogRows() {
-        return logRows;
+        return wait.until(visibilityOfAllElements(logRows));
     }
 
     public void open() {
@@ -66,7 +60,12 @@ public class DifferentElementsPage extends AbstractPage {
     }
 
     public boolean findInLog(String elementName) {
-        return logRows.stream().anyMatch(i -> i.getText().contains(elementName));
+        return wait.until(visibilityOfAllElements(logRows))
+                   .stream().anyMatch(i -> i.getText().contains(elementName));
     }
 
+    public String getLogBodyText() {
+        return wait.until(visibilityOfAllElements(logSection))
+                   .stream().map(WebElement::getText).collect(Collectors.joining(""));
+    }
 }

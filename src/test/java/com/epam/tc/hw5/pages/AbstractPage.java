@@ -15,7 +15,15 @@ public class AbstractPage extends AbstractComponent {
         headerMenu = new HeaderMenu(webDriver);
     }
 
-    protected void open(String url) {
+    public void open(String url) {
         webDriver.navigate().to(BASE_URL + url);
+    }
+
+    public String getTitle() {
+        return webDriver.getTitle();
+    }
+
+    public HeaderMenu getHeaderMenu() {
+        return headerMenu;
     }
 }
