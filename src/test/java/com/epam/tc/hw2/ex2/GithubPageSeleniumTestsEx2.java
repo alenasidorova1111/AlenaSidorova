@@ -11,17 +11,15 @@ import org.testng.annotations.Test;
 
 public class GithubPageSeleniumTestsEx2 extends BaseTest {
 
-    protected SoftAssertions soft;
-
     @Test
     public void differentElementsPageTest() {
-        soft = new SoftAssertions();
+        SoftAssertions softly = new SoftAssertions();
 
         // 1. Open test site by URL
         webDriver.navigate().to("https://jdi-testing.github.io/jdi-light/index.html");
 
         // 2. Assert Browser title
-        soft.assertThat(webDriver.getTitle()).isEqualTo("Home Page");
+        softly.assertThat(webDriver.getTitle()).isEqualTo("Home Page");
 
         // 3. Perform login
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
@@ -37,7 +35,7 @@ public class GithubPageSeleniumTestsEx2 extends BaseTest {
         // 4. Assert Username is loggined
         String userName = webDriverWait.until(ExpectedConditions.visibilityOf(
             webDriver.findElement(By.id("user-name")))).getText();
-        soft.assertThat(userName).isEqualTo("ROMAN IOVLEV");
+        softly.assertThat(userName).isEqualTo("ROMAN IOVLEV");
 
         // 5. Open through the header menu Service -> Different Elements Page
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
@@ -69,12 +67,12 @@ public class GithubPageSeleniumTestsEx2 extends BaseTest {
         // - for dropdown there is a log row and value is corresponded to the selected value.
         List<WebElement> logRows = webDriverWait.until(ExpectedConditions.visibilityOfAllElements(
             webDriver.findElements(By.xpath("//ul[@class='panel-body-list logs']/li"))));
-        soft.assertThat(logRows.stream().map(WebElement::getText).collect(Collectors.toList())).asString()
+        softly.assertThat(logRows.stream().map(WebElement::getText).collect(Collectors.toList())).asString()
             .containsSubsequence("Yellow", "Selen", "Wind", "Water");
 
         // 10. Close Browser !! MADE IN src\test\java\com\epam\tc\hw2\BaseTest.java
 
-        soft.assertAll();
+        softly.assertAll();
     }
 }
 
