@@ -1,78 +1,75 @@
 package com.epam.tc.hw4.pages;
 
-import com.epam.tc.hw3.components.HeaderMenu;
-import com.epam.tc.hw3.components.LeftMenu;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
+
+import io.qameta.allure.Step;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class DifferentElementsPage {
-    WebDriver webDriver;
-    private final HeaderMenu headerMenu;
-    private final LeftMenu leftMenu;
+public class DifferentElementsPage extends AbstractPage {
 
-    @FindBy(xpath = "//*[@class='profile-photo'][1]")
-    private WebElement signInIcon;
-    @FindBy(xpath = "//span[@id='user-name']")
-    private WebElement userName;
     @FindBy(css = ".label-checkbox")
     private List<WebElement> checkBoxes;
     @FindBy(css = ".label-radio")
     private List<WebElement> radioButtons;
-    @FindBy(xpath = "//select[@class='uui-form-element']")
+    @FindBy(tagName = "select")
     private WebElement dropdown;
     @FindBy(tagName = "option")
     private List<WebElement> dropdownColors;
-    @FindBy(xpath = "//ul[@class='panel-body-list logs']/li")
+    @FindBy(className = "info-panel-section")
+    private List<WebElement> logSection;
+    @FindBy(css = ".panel-body-list.logs")
     private List<WebElement> logRows;
 
-    public DifferentElementsPage(WebDriver webDriver1) {
-        PageFactory.initElements(webDriver1, this);
-        this.webDriver = webDriver1;
-        headerMenu = new HeaderMenu(webDriver1);
-        leftMenu = new LeftMenu(webDriver1);
+    public DifferentElementsPage(WebDriver webDriver) {
+        super(webDriver);
     }
 
-    public String getPageTitle() {
-        return webDriver.getTitle();
-    }
-
-    public String getUserName() {
-        return userName.getText();
-    }
-
-    public HeaderMenu getHeaderMenu() {
-        return headerMenu;
-    }
-
-    public LeftMenu getLeftMenu() {
-        return leftMenu;
-    }
-
+    @Step("Select checkbox")
     public void chooseCheckBox(String boxName) {
-        checkBoxes.stream()
-                  .filter(i -> i.getText().contains(boxName))
-                  .collect(Collectors.toList()).get(0).click();
+        wait.until(visibilityOfAllElements(checkBoxes))
+            .stream()
+            .filter(i -> i.getText().contains(boxName))
+            .collect(Collectors.toList()).stream().findFirst().get().click();
     }
 
+    @Step("Select radio")
     public void chooseRadio(String radioName) {
-        radioButtons.stream()
-                    .filter(i -> i.getText().contains(radioName))
-                    .collect(Collectors.toList()).get(0).click();
+        wait.until(visibilityOfAllElements(radioButtons))
+            .stream()
+            .filter(i -> i.getText().contains(radioName))
+            .collect(Collectors.toList()).stream().findFirst().get().click();
     }
 
+    @Step("Select in dropdown")
     public void chooseDropdown(String color) {
-        dropdown.click();
+        wait.until(ExpectedConditions.visibilityOf(dropdown)).click();
         webDriver.switchTo().activeElement();
-        dropdownColors.stream()
-                      .filter(i -> i.getText().contains(color))
-                      .collect(Collectors.toList()).get(0).click();
+        wait.until(visibilityOfAllElements(dropdownColors))
+            .stream()
+            .filter(i -> i.getText().contains(color))
+            .collect(Collectors.toList()).stream().findFirst().get().click();
     }
 
     public boolean findInLog(String elementName) {
-        return logRows.stream().anyMatch(i -> i.getText().contains(elementName));
+        return wait.until(visibilityOfAllElements(logRows))
+                   .stream().anyMatch(i -> i.getText().contains(elementName));
+    }
+
+    public String getLogBodyText() {
+        return wait.until(visibilityOfAllElements(logSection))
+                   .stream().map(WebElement::getText).collect(Collectors.joining(""));
+    }
+
+    @Step("Check info about selected items is displayed in log section")
+    public void testInfoAboutItemsAreSelected(String force1, String force2, String metal, String color) {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(this.getLogBodyText()).contains(force1, force2, metal, color);
+        softly.assertAll();
     }
 }

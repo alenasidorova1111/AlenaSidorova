@@ -1,65 +1,28 @@
 package com.epam.tc.hw4.pages;
 
-import com.epam.tc.hw3.utils.ConfProperties;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+
 import com.epam.tc.hw4.components.BenefitSection;
-import com.epam.tc.hw4.components.HeaderMenu;
-import com.epam.tc.hw4.components.LeftMenu;
+import io.qameta.allure.Step;
+import java.util.Arrays;
+import java.util.List;
+import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class HomePage {
+public class HomePage extends AbstractPage {
 
-    public static final String URL = "https://jdi-testing.github.io/jdi-light/index.html";
-    protected WebDriver webDriver;
-    protected HeaderMenu headerMenu;
-    protected LeftMenu leftMenu;
     protected BenefitSection benefitSection;
 
-    public HomePage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        headerMenu = new HeaderMenu(webDriver);
-        benefitSection = new BenefitSection(webDriver);
-        leftMenu = new LeftMenu(webDriver);
-        PageFactory.initElements(webDriver, this);
-    }
-
-    @FindBy(xpath = "//iframe[@id='frame']")
+    @FindBy(id = "frame")
     private WebElement interactiveFrame;
-    @FindBy(xpath = "//input[@value='Frame Button']")
+    @FindBy(id = "frame-button")
     private WebElement frameButton;
-    @FindBy(xpath = "//*[@class='profile-photo'][1]")
-    private WebElement signInIcon;
-    @FindBy(xpath = "//input[@id='name'][1]")
-    private WebElement loginField;
-    @FindBy(xpath = "//input[@id='password'][1]")
-    private WebElement passwordField;
-    @FindBy(xpath = "//button[@id='login-button'][1]")
-    private WebElement signInButton;
-    @FindBy(xpath = "//span[@id='user-name']")
-    private WebElement userName;
-    @FindBy(xpath = "//a[contains(text(),'Different elements')]")
-    private WebElement differentElementsButton;
 
-    public void openPage() {
-        webDriver.navigate().to(URL);
-    }
-
-    public String getPageTitle() {
-        return webDriver.getTitle();
-    }
-
-    public String getUserName() {
-        return this.userName.getText();
-    }
-
-    public HeaderMenu getHeaderMenu() {
-        return headerMenu;
-    }
-
-    public LeftMenu getLeftMenu() {
-        return leftMenu;
+    public HomePage(WebDriver webDriver) {
+        super(webDriver);
+        benefitSection = new BenefitSection(webDriver);
     }
 
     public BenefitSection getBenefitSection() {
@@ -67,11 +30,11 @@ public class HomePage {
     }
 
     public WebElement getIFrame() {
-        return interactiveFrame;
+        return wait.until(visibilityOf(interactiveFrame));
     }
 
     public WebElement getIFrameButton() {
-        return frameButton;
+        return wait.until(visibilityOf(frameButton));
     }
 
     public void goToIFrame() {
@@ -82,17 +45,96 @@ public class HomePage {
         webDriver.switchTo().defaultContent();
     }
 
-    public void login() {
-        signInIcon.click();
-        webDriver.switchTo().activeElement();
-        loginField.sendKeys(ConfProperties.getProperty("login"));
-        passwordField.sendKeys(ConfProperties.getProperty("password"));
-        signInButton.click();
+    @Step("Open Home page")
+    public void open() {
+        open("index.html");
     }
 
-    public void goToDifferentElementsPage() {
-        headerMenu.button("SERVICE").click();
-        webDriver.switchTo().activeElement();
-        differentElementsButton.click();
+    @Step("Check browser title")
+    public void testPageTitle() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(webDriver.getTitle()).isEqualTo("Home Page");
+        softly.assertAll();
+    }
+
+    @Step("Perform login")
+    public void login() {
+        headerMenu.login();
+    }
+
+    @Step("Check Username")
+    public void testUserName() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(headerMenu.getUserName()).isEqualTo("ROMAN IOVLEV");
+        softly.assertAll();
+    }
+
+    @Step("Check Header Menu buttons")
+    public void testMenuButtonsNames() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(headerMenu.getHeaderButtons()).hasSize(4);
+        List<String> expectedButtonNames = Arrays.asList("HOME", "CONTACT FORM", "SERVICE", "METALS & COLORS");
+        softly.assertThat(headerMenu.getButtonsNames()).isEqualTo(expectedButtonNames);
+        softly.assertAll();
+    }
+
+    @Step("Check benefit section images are displayed")
+    public void testBenefitImages() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(this.getBenefitSection().getBenefitImages()).hasSize(4);
+        softly.assertThat(this.getBenefitSection().areAllImagesDisplayed()).isTrue();
+        softly.assertAll();
+    }
+
+    @Step("Check benefit section images have proper text under")
+    public void testBenefitITexts() {
+        SoftAssertions softly = new SoftAssertions();
+        List<String> expectedBenefitTexts = Arrays.asList("To include good practices\n"
+                + "and ideas from successful\n" + "EPAM project", "To be flexible and\n" + "customizable",
+            "To be multiplatform", "Already have good base\n" + "(about 20 internal and\n"
+                + "some external projects),\n" + "wish to get more…");
+
+        softly.assertThat(this.getBenefitSection().getBenefitTextElements()).hasSize(4);
+        softly.assertThat(this.getBenefitSection().getBenefitTexts()).isEqualTo(expectedBenefitTexts);
+        softly.assertAll();
+    }
+
+    @Step("Check iFrame existence")
+    public void testIframeExist() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(this.getIFrame().isDisplayed()).isTrue();
+        softly.assertAll();
+    }
+
+    @Step("Check iFrame button existence")
+    public void testLeftMenuButtonsNames() {
+        SoftAssertions softly = new SoftAssertions();
+
+        List<String> expectedLeftMenuButtonNames = Arrays.asList(
+            "Home", "Contact form", "Service", "Metals & Colors", "Elements packs");
+        softly.assertThat(leftMenu.getMenuButtons()).hasSize(5);
+        softly.assertThat(leftMenu.areAllButtonsDisplayed()).isTrue();
+        softly.assertThat(leftMenu.getButtonsNames()).isEqualTo(expectedLeftMenuButtonNames);
+
+        softly.assertAll();
+    }
+
+    @Step("Check Left Menu buttons")
+    public void testIframeButtonExists() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(this.getIFrameButton().isDisplayed()).isTrue();
+        softly.assertAll();
+    }
+
+    @Step("Open through the header menu Different Elements Page")
+    public DifferentElementsPage openDifferentElementsPage() {
+        return headerMenu.openDifferentElementsPage();
+    }
+
+    @Step("Check Username to fail")
+    public void testUserNameFailed() {
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(headerMenu.getUserName()).isEqualTo("Ramen ILove");
+        softly.assertAll();
     }
 }

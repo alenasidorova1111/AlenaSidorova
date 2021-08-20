@@ -1,116 +1,54 @@
 package com.epam.tc.hw4.ex1;
 
 import com.epam.tc.hw4.pages.HomePage;
-import com.epam.tc.hw4.utils.BaseTest;
+import com.epam.tc.hw4.utils.AbstractTest;
 import com.epam.tc.hw4.utils.TestFailureListener;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Step;
 import io.qameta.allure.Story;
-import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Listeners({TestFailureListener.class})
-@Feature(value = "Home page")
+@Feature(value = "Home page with failure")
 @Story(value = "User can not login and use Home page elements")
-public class FailedPageTest extends BaseTest {
-
-    SoftAssertions soft = new SoftAssertions();
+public class FailedPageTest extends AbstractTest {
 
     @Test
-    @Step("Check Home page title")
-    public void testHomePageTitle() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
-        soft.assertThat(homePage.getPageTitle()).isEqualTo("Home Page");
-        soft.assertAll();
-    }
+    public void testHomePage() {
 
-    @Test
-    @Step("Check logging process was successful")
-    public void testLoginProcess() {
+        // 1. Open test site by URL
         HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
+        homePage.open();
+
+        // 2. Assert Browser title
+        homePage.testPageTitle();
+
+        // 3. Perform login
         homePage.login();
-        soft.assertThat(homePage.getUserName()).isEqualTo("ROMAN IOVUUUUULEV");
-        soft.assertAll();
-    }
 
-    @Test
-    @Step ("Check header menu buttons")
-    public void testHeaderMenuButtons() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
-        soft.assertThat(homePage.getHeaderMenu().headerButtons.size()).isEqualTo(4);
-        soft.assertThat(homePage.getHeaderMenu().getButtonName(0)).isEqualTo("HOME");
-        soft.assertThat(homePage.getHeaderMenu().getButtonName(1)).isEqualTo("CONTACT FORM");
-        soft.assertThat(homePage.getHeaderMenu().getButtonName(2)).isEqualTo("SERVICE");
-        soft.assertThat(homePage.getHeaderMenu().getButtonName(3)).isEqualTo("METALS & COLORS");
-        soft.assertAll();
-    }
+        // 4. Assert Username is loggined
+        homePage.testUserNameFailed();
 
-    @Test
-    @Step ("Check benefit images")
-    public void testBenefitImages() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
-        soft.assertThat(homePage.getBenefitSection().benefitImages.size()).isEqualTo(4);
-        soft.assertThat(homePage.getBenefitSection().checkAllImagesDisplayed()).isTrue();
-        soft.assertAll();
-    }
+        // 5. Assert that there are 4 items on the header section are displayed and they have proper texts
+        homePage.testMenuButtonsNames();
 
-    @Test
-    @Step ("Check benefit texts")
-    public void testBenefitTexts() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
-        soft.assertThat(homePage.getBenefitSection().benefitTexts.size()).isEqualTo(4);
-        soft.assertThat(homePage.getBenefitSection().getBenefitText(0))
-            .isEqualTo("To include good practices\n"
-                + "and ideas from successful\n" + "EPAM project");
-        soft.assertThat(homePage.getBenefitSection().getBenefitText(1))
-            .isEqualTo("To be flexible and\n" + "customizable");
-        soft.assertThat(homePage.getBenefitSection().getBenefitText(2))
-            .isEqualTo("To be multiplatform");
-        soft.assertThat(homePage.getBenefitSection().getBenefitText(3))
-            .isEqualTo("Already have good base\n" + "(about 20 internal and\n"
-                + "some external projects),\n" + "wish to get more…");
-        soft.assertAll();
-    }
+        // 6. Assert that there are 4 images on the Index Page and they are displayed
+        homePage.testBenefitImages();
 
-    @Test
-    @Step ("Check iframe exists")
-    public void testIFrame() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
-        soft.assertThat(homePage.getIFrame().isDisplayed()).isTrue();
-        soft.assertAll();
-    }
+        // 7. Assert that there are 4 texts on the Index Page under icons and they have proper text
+        homePage.testBenefitITexts();
 
-    @Test
-    @Step ("Check Frame button in iframe")
-    public void testIFrameButton() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
+        // 8. Assert that there is the iframe with “Frame Button” exist
+        homePage.testIframeExist();
+
+        // 9. Switch to the iframe and check that there is “Frame Button” in the iframe
         homePage.goToIFrame();
-        soft.assertThat(homePage.getIFrameButton().isDisplayed()).isTrue();
+        homePage.testIframeButtonExists();
+
+        // 10. Switch to original window back
         homePage.exitIFrame();
-        soft.assertAll();
-    }
 
-    @Test
-    @Step ("Check Left menu buttons")
-    public void testLeftMenuButtons() {
-        HomePage homePage = new HomePage(webDriver);
-        homePage.openPage();
-        soft.assertThat(homePage.getLeftMenu().menuButtons.size()).isEqualTo(5);
-        soft.assertThat(homePage.getLeftMenu().checkAllButtonsDisplayed()).isTrue();
-        soft.assertThat(homePage.getLeftMenu().getButtonName(0)).isEqualTo("Home");
-        soft.assertThat(homePage.getLeftMenu().getButtonName(1)).isEqualTo("Contact form");
-        soft.assertThat(homePage.getLeftMenu().getButtonName(2)).isEqualTo("Service");
-        soft.assertThat(homePage.getLeftMenu().getButtonName(3)).isEqualTo("Metals & Colors");
-        soft.assertThat(homePage.getLeftMenu().getButtonName(4)).isEqualTo("Elements packs");
-        soft.assertAll();
+        // 11. Assert that there are 5 items in the Left Section are displayed and they have proper text
+        homePage.testLeftMenuButtonsNames();
     }
-
 }

@@ -1,27 +1,26 @@
 package com.epam.tc.hw4.utils;
 
-import java.util.concurrent.TimeUnit;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-public class BaseTest {
+public abstract class AbstractTest {
 
     protected WebDriver webDriver;
 
     @BeforeMethod
     public void prepareToTest(ITestContext context) {
-        DriverService driverService = new WebDriverInjector().getDriverService();
-        webDriver = driverService.setupDriver();
-        webDriver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
+        WebDriverManager.chromedriver().setup();
+        webDriver = new ChromeDriver();
         context.setAttribute("webDriver", webDriver);
+        webDriver.manage().window().maximize();
     }
 
     @AfterMethod
     public void tearDownDriver() {
-        if (webDriver != null) {
-            webDriver.quit();
-        }
+        webDriver.quit();
     }
 }
