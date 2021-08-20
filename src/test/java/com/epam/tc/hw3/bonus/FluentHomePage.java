@@ -1,82 +1,65 @@
 package com.epam.tc.hw3.bonus;
 
-import com.epam.tc.hw3.components.BenefitSection;
-import com.epam.tc.hw3.components.HeaderMenu;
-import com.epam.tc.hw3.components.LeftMenu;
-import com.epam.tc.hw3.pages.DifferentElementsPage;
-import com.epam.tc.hw3.utils.ConfProperties;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
+
+import com.epam.tc.hw3.pages.AbstractPage;
+import com.epam.tc.hw3.utils.DataProvidersForPageObject;
+import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class FluentHomePage {
+public class FluentHomePage extends AbstractPage {
 
-    WebDriver webDriver;
-    private final HeaderMenu headerMenu;
-    private final LeftMenu leftMenu;
-    private final BenefitSection benefitSection;
-
-    @FindBy(xpath = "//iframe[@id='frame']")
+    @FindBy(id = "frame")
     private WebElement interactiveFrame;
-    @FindBy(xpath = "//input[@value='Frame Button']")
+    @FindBy(id = "frame-button")
     private WebElement frameButton;
-    @FindBy(xpath = "//*[@class='profile-photo'][1]")
+    @FindBy(css = "header ul.navbar-nav.m-l8 > li")
+    private List<WebElement> headerButtons;
+    @FindBy(css = ".dropdown-menu li")
+    private List<WebElement> serviceMenuButtons;
+    @FindBy(id = "user-icon")
     private WebElement signInIcon;
-    @FindBy(xpath = "//input[@id='name'][1]")
+    @FindBy(id = "name")
     private WebElement loginField;
-    @FindBy(xpath = "//input[@id='password'][1]")
+    @FindBy(id = "password")
     private WebElement passwordField;
-    @FindBy(xpath = "//button[@id='login-button'][1]")
+    @FindBy(id = "login-button")
     private WebElement signInButton;
-    @FindBy(xpath = "//span[@id='user-name']")
+    @FindBy(id = "user-name")
     private WebElement userName;
-    @FindBy(xpath = "//a[contains(text(),'Different elements')]")
+    @FindBy(linkText = "different-elements.html")
     private WebElement differentElementsButton;
+    @FindBy(linkText = "user-table.html")
+    private WebElement userTableButton;
 
-    public FluentHomePage(WebDriver webDriver1) {
-        PageFactory.initElements(webDriver1, this);
-        this.webDriver = webDriver1;
-        headerMenu = new HeaderMenu(webDriver1);
-        benefitSection = new BenefitSection(webDriver1);
-        leftMenu = new LeftMenu(webDriver1);
+    public FluentHomePage(WebDriver webDriver) {
+        super(webDriver);
     }
 
-    public FluentHomePage login() {
-        signInIcon.click();
-        webDriver.switchTo().activeElement();
-        loginField.sendKeys(ConfProperties.getProperty("login"));
-        passwordField.sendKeys(ConfProperties.getProperty("password"));
-        signInButton.click();
+    public FluentHomePage open() {
+        open("index.html");
         return this;
     }
 
-    public String getPageTitle() {
-        return webDriver.getTitle();
+    public FluentHomePage login() {
+        wait.until(visibilityOf(signInIcon)).click();
+        webDriver.switchTo().activeElement();
+        wait.until(visibilityOf(loginField)).sendKeys(DataProvidersForPageObject.getProperty("login"));
+        wait.until(visibilityOf(passwordField)).sendKeys(DataProvidersForPageObject.getProperty("password"));
+        wait.until(visibilityOf(signInButton)).click();
+        return this;
     }
 
-    public String getUserName() {
-        return this.userName.getText();
-    }
-
-    public HeaderMenu getHeaderMenu() {
-        return headerMenu;
-    }
-
-    public LeftMenu getLeftMenu() {
-        return leftMenu;
-    }
-
-    public BenefitSection getBenefitSection() {
-        return benefitSection;
-    }
 
     public WebElement getIFrame() {
-        return interactiveFrame;
+        return wait.until(visibilityOf(interactiveFrame));
     }
 
     public WebElement getIFrameButton() {
-        return frameButton;
+        return wait.until(visibilityOf(frameButton));
     }
 
     public void goToIFrame() {
@@ -87,10 +70,10 @@ public class FluentHomePage {
         webDriver.switchTo().defaultContent();
     }
 
-    public DifferentElementsPage goToDifferentElementsPage() {
-        headerMenu.button("SERVICE").click();
+    public FluentDifferentElementsPage openDifferentElementsPage() {
+        headerMenu.clickButton(wait.until(visibilityOfAllElements(headerButtons)), "SERVICE");
         webDriver.switchTo().activeElement();
-        differentElementsButton.click();
-        return new DifferentElementsPage(webDriver);
+        headerMenu.clickButton(wait.until(visibilityOfAllElements(serviceMenuButtons)), "DIFFERENT ELEMENTS");
+        return new FluentDifferentElementsPage(webDriver);
     }
 }

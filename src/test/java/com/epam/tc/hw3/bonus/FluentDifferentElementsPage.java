@@ -1,7 +1,8 @@
-package com.epam.tc.hw3.pages;
+package com.epam.tc.hw3.bonus;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
 
+import com.epam.tc.hw3.pages.AbstractPage;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class DifferentElementsPage extends AbstractPage {
+public class FluentDifferentElementsPage extends AbstractPage {
 
     @FindBy(css = ".label-checkbox")
     private List<WebElement> checkBoxes;
@@ -24,31 +25,34 @@ public class DifferentElementsPage extends AbstractPage {
     @FindBy(css = ".panel-body-list.logs")
     private List<WebElement> logRows;
 
-    public DifferentElementsPage(WebDriver webDriver) {
+    public FluentDifferentElementsPage(WebDriver webDriver) {
         super(webDriver);
     }
 
-    public void chooseCheckBox(String boxName) {
+    public FluentDifferentElementsPage chooseCheckBox(String boxName) {
         wait.until(visibilityOfAllElements(checkBoxes))
             .stream()
             .filter(i -> i.getText().contains(boxName))
             .collect(Collectors.toList()).stream().findFirst().get().click();
+        return this;
     }
 
-    public void chooseRadio(String radioName) {
+    public FluentDifferentElementsPage chooseRadio(String radioName) {
         wait.until(visibilityOfAllElements(radioButtons))
             .stream()
             .filter(i -> i.getText().contains(radioName))
             .collect(Collectors.toList()).stream().findFirst().get().click();
+        return this;
     }
 
-    public void chooseDropdown(String color) {
+    public FluentDifferentElementsPage chooseDropdown(String color) {
         wait.until(ExpectedConditions.visibilityOf(dropdown)).click();
         webDriver.switchTo().activeElement();
         wait.until(visibilityOfAllElements(dropdownColors))
             .stream()
             .filter(i -> i.getText().contains(color))
             .collect(Collectors.toList()).stream().findFirst().get().click();
+        return this;
     }
 
     public boolean findInLog(String elementName) {

@@ -1,25 +1,32 @@
 package com.epam.tc.hw3.components;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
+
 import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class LeftMenu {
+public class LeftMenu extends AbstractComponent {
 
-    @FindBy(xpath = "//ul[@class='sidebar-menu left']/li/a")
-    public List<WebElement> menuButtons;
+    @FindBy(css = ".sidebar-menu.left>li")
+    private List<WebElement> menuButtons;
 
     public LeftMenu(WebDriver webDriver) {
-        PageFactory.initElements(webDriver, this);
+        super(webDriver);
     }
 
-    public boolean checkAllButtonsDisplayed() {
-        return menuButtons.stream().allMatch(WebElement::isDisplayed);
+    public boolean areAllButtonsDisplayed() {
+        return wait.until(visibilityOfAllElements(menuButtons)).stream().allMatch(WebElement::isDisplayed);
     }
 
-    public String getButtonName(int elementNumber) {
-        return menuButtons.get(elementNumber).getText();
+    public List<String> getButtonsNames() {
+        return wait.until(visibilityOfAllElements(menuButtons))
+                   .stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public List<WebElement> getMenuButtons() {
+        return wait.until(visibilityOfAllElements(menuButtons));
     }
 }

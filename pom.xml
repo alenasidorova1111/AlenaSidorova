@@ -23,6 +23,7 @@
         <checkstyle.version>8.42</checkstyle.version>
         <selenium-java.version>3.141.59</selenium-java.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
+        <webdrivermanager.version>4.4.3</webdrivermanager.version>
     </properties>
 
     <build>
@@ -74,9 +75,6 @@
     <profiles>
         <profile>
             <id>add-and-subtract-operations-tests</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <testng.suite.file>${testng.configs.path}/test.AddAndSubtractOperations.xml</testng.suite.file>
             </properties>
@@ -101,6 +99,9 @@
         </profile>
         <profile>
             <id>page-object-tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <testng.suite.file>${testng.configs.path}/test.PageObject.xml</testng.suite.file>
             </properties>
@@ -136,11 +137,12 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium-java.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>4.4.3</version>
+            <version>${webdrivermanager.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

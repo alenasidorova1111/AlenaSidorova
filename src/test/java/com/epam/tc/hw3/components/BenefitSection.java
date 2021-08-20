@@ -1,27 +1,39 @@
 package com.epam.tc.hw3.components;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElements;
+
 import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class BenefitSection {
+public class BenefitSection extends AbstractComponent {
 
     @FindBy(css = ".benefit-icon")
-    public List<WebElement> benefitImages;
+    private List<WebElement> benefitImages;
     @FindBy(css = ".benefit-txt")
-    public List<WebElement> benefitTexts;
+    private List<WebElement> benefitTexts;
 
     public BenefitSection(WebDriver webDriver) {
-        PageFactory.initElements(webDriver, this);
+        super(webDriver);
     }
 
-    public String getBenefitText(int elementNumber) {
-        return benefitTexts.get(elementNumber).getText();
+    public List<WebElement> getBenefitImages() {
+        return wait.until(ExpectedConditions.visibilityOfAllElements(benefitImages));
     }
 
-    public boolean checkAllImagesDisplayed() {
-        return benefitImages.stream().allMatch(WebElement::isDisplayed);
+    public List<WebElement> getBenefitTextElements() {
+        return wait.until(ExpectedConditions.visibilityOfAllElements(benefitTexts));
+    }
+
+    public List<String> getBenefitTexts() {
+        return wait.until(visibilityOfAllElements(benefitTexts))
+                   .stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public boolean areAllImagesDisplayed() {
+        return getBenefitImages().stream().allMatch(WebElement::isDisplayed);
     }
 }
