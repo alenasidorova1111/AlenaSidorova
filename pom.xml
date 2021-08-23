@@ -21,6 +21,9 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle.version>8.42</checkstyle.version>
+        <selenium-java.version>3.141.59</selenium-java.version>
+        <slf4j-simple.version>1.7.30</slf4j-simple.version>
+        <webdrivermanager.version>4.4.3</webdrivermanager.version>
     </properties>
 
     <build>
@@ -72,9 +75,6 @@
     <profiles>
         <profile>
             <id>add-and-subtract-operations-tests</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <testng.suite.file>${testng.configs.path}/test.AddAndSubtractOperations.xml</testng.suite.file>
             </properties>
@@ -89,6 +89,15 @@
             <id>all-tests</id>
             <properties>
                 <testng.suite.file>${testng.configs.path}/test.all.xml</testng.suite.file>
+            </properties>
+        </profile>
+        <profile>
+            <id>github-page-test-ex1-ex2-tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <testng.suite.file>${testng.configs.path}/test.GithubPageSeleniumEx1Ex2.xml</testng.suite.file>
             </properties>
         </profile>
     </profiles>
@@ -107,11 +116,28 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j-simple.version}</version>
+        </dependency>
+        <dependency>
             <groupId>calculator</groupId>
             <artifactId>calculatorapp</artifactId>
             <scope>system</scope>
             <version>1.0</version>
             <systemPath>${project.basedir}/src/main/resources/calculator-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
