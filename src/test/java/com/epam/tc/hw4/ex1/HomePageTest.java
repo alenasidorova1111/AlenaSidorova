@@ -2,6 +2,7 @@ package com.epam.tc.hw4.ex1;
 
 import com.epam.tc.hw4.pages.HomePage;
 import com.epam.tc.hw4.utils.AbstractTest;
+import com.epam.tc.hw4.utils.DataProvidersForPageObject;
 import com.epam.tc.hw4.utils.TestFailureListener;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -13,8 +14,8 @@ import org.testng.annotations.Test;
 @Story(value = "User can login and use Home page elements")
 public class HomePageTest extends AbstractTest {
 
-    @Test
-    public void testHomePage() {
+    @Test(dataProvider = "loginPassword", dataProviderClass = DataProvidersForPageObject.class)
+    public void testHomePage(String login, String password) {
 
         // 1. Open test site by URL
         HomePage homePage = new HomePage(webDriver);
@@ -24,7 +25,7 @@ public class HomePageTest extends AbstractTest {
         homePage.testPageTitle();
 
         // 3. Perform login
-        homePage.login();
+        homePage.login(login, password);
 
         // 4. Assert Username is loggined
         homePage.testUserName();

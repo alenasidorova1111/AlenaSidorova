@@ -16,7 +16,8 @@ import org.testng.annotations.Test;
 public class DifferentElementsPageTest extends AbstractTest {
 
     @Test(dataProvider = "twoForcesMetalColor", dataProviderClass = DataProvidersForPageObject.class)
-    public void testDifferentElementsPage(String force1, String force2, String metal, String color) {
+    public void testDifferentElementsPage(String force1, String force2, String metal, String color,
+                                          String login, String password) {
 
         // 1. Open test site by URL
         HomePage homePage = new HomePage(webDriver);
@@ -26,7 +27,7 @@ public class DifferentElementsPageTest extends AbstractTest {
         homePage.testPageTitle();
 
         // 3. Perform login
-        homePage.login();
+        homePage.login(login, password);
 
         // 4. Assert Username is loggined
         homePage.testUserName();

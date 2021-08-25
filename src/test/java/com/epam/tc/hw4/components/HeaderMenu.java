@@ -44,7 +44,7 @@ public class HeaderMenu extends AbstractComponent {
     public void clickButton(List<WebElement> buttonsType, String buttonName) {
         wait.until(visibilityOfAllElements(buttonsType))
             .stream().filter(i -> i.getText().equals(buttonName))
-            .findFirst().get().click();
+            .findFirst().orElseThrow().click();
     }
 
     public DifferentElementsPage openDifferentElementsPage() {
@@ -54,11 +54,11 @@ public class HeaderMenu extends AbstractComponent {
         return new DifferentElementsPage(webDriver);
     }
 
-    public void login() {
+    public void login(String name, String password) {
         wait.until(visibilityOf(signInIcon)).click();
         webDriver.switchTo().activeElement();
-        wait.until(visibilityOf(loginField)).sendKeys(DataProvidersForPageObject.getProperty("login"));
-        wait.until(visibilityOf(passwordField)).sendKeys(DataProvidersForPageObject.getProperty("password"));
+        wait.until(visibilityOf(loginField)).sendKeys(name);
+        wait.until(visibilityOf(passwordField)).sendKeys(password);
         wait.until(visibilityOf(signInButton)).click();
     }
 

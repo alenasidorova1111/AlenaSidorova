@@ -38,7 +38,7 @@ public class HomePage extends AbstractPage {
     }
 
     public void goToIFrame() {
-        webDriver.switchTo().frame("frame");
+        webDriver.switchTo().frame(interactiveFrame);
     }
 
     public void exitIFrame() {
@@ -57,9 +57,9 @@ public class HomePage extends AbstractPage {
         softly.assertAll();
     }
 
-    @Step("Perform login")
-    public void login() {
-        headerMenu.login();
+    @Step("Perform login with {name} / {password}")
+    public void login(String name, String password) {
+        headerMenu.login(name, password);
     }
 
     @Step("Check Username")

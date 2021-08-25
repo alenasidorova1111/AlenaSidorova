@@ -30,30 +30,30 @@ public class DifferentElementsPage extends AbstractPage {
         super(webDriver);
     }
 
-    @Step("Select checkbox")
+    @Step("Select checkbox {boxName}")
     public void chooseCheckBox(String boxName) {
         wait.until(visibilityOfAllElements(checkBoxes))
             .stream()
             .filter(i -> i.getText().contains(boxName))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
     }
 
-    @Step("Select radio")
+    @Step("Select radio {radioName}")
     public void chooseRadio(String radioName) {
         wait.until(visibilityOfAllElements(radioButtons))
             .stream()
             .filter(i -> i.getText().contains(radioName))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
     }
 
-    @Step("Select in dropdown")
+    @Step("Select in dropdown {color}")
     public void chooseDropdown(String color) {
         wait.until(ExpectedConditions.visibilityOf(dropdown)).click();
         webDriver.switchTo().activeElement();
         wait.until(visibilityOfAllElements(dropdownColors))
             .stream()
             .filter(i -> i.getText().contains(color))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
     }
 
     public boolean findInLog(String elementName) {
@@ -66,7 +66,7 @@ public class DifferentElementsPage extends AbstractPage {
                    .stream().map(WebElement::getText).collect(Collectors.joining(""));
     }
 
-    @Step("Check info about selected items is displayed in log section")
+    @Step("Check info about {force1} / {force2} / {metal} / {color} items are displayed in log section")
     public void testInfoAboutItemsAreSelected(String force1, String force2, String metal, String color) {
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(this.getLogBodyText()).contains(force1, force2, metal, color);
