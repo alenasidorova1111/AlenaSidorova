@@ -9,17 +9,29 @@ public class DataProvidersForPageObject {
 
     @DataProvider(name = "twoForcesMetalColor")
     public static Object[][] twoForcesMetalColor() {
+        String login = getProperty("login", "src/test/resources/conf.properties");
+        String password = getProperty("password", "src/test/resources/conf.properties");
         return new Object[][] {
-            {"Water", "Wind", "Selen", "Yellow"},
-            {"Fire", "Earth", "Bronze", "Green"},
+            {"Water", "Wind", "Selen", "Yellow", login, password},
+            {"Fire", "Earth", "Bronze", "Green", login, password},
+        };
+    }
+
+    @DataProvider(name = "loginPassword")
+    public static Object[][] loginPassword() {
+        String login = getProperty("login", "src/test/resources/conf.properties");
+        String password = getProperty("password", "src/test/resources/conf.properties");
+        return new Object[][] {
+            {login, password},
+            {login, password},
         };
     }
 
     protected static Properties PROPERTIES;
 
-    public static String getProperty(String key) {
+    public static String getProperty(String key, String path) {
 
-        try (FileInputStream fileInputStream = new FileInputStream("src/test/resources/conf.properties")) {
+        try (FileInputStream fileInputStream = new FileInputStream(path)) {
             PROPERTIES = new Properties();
             PROPERTIES.load(fileInputStream);
         } catch (IOException e) {
@@ -27,4 +39,6 @@ public class DataProvidersForPageObject {
         }
         return PROPERTIES.getProperty(key);
     }
+
+
 }

@@ -32,14 +32,14 @@ public class DifferentElementsPage extends AbstractPage {
         wait.until(visibilityOfAllElements(checkBoxes))
             .stream()
             .filter(i -> i.getText().contains(boxName))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
     }
 
     public void chooseRadio(String radioName) {
         wait.until(visibilityOfAllElements(radioButtons))
             .stream()
             .filter(i -> i.getText().contains(radioName))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
     }
 
     public void chooseDropdown(String color) {
@@ -48,7 +48,7 @@ public class DifferentElementsPage extends AbstractPage {
         wait.until(visibilityOfAllElements(dropdownColors))
             .stream()
             .filter(i -> i.getText().contains(color))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
     }
 
     public boolean findInLog(String elementName) {

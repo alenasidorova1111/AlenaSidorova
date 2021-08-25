@@ -2,6 +2,7 @@ package com.epam.tc.hw3.ex1;
 
 import com.epam.tc.hw3.pages.HomePage;
 import com.epam.tc.hw3.utils.AbstractTest;
+import com.epam.tc.hw3.utils.DataProvidersForPageObject;
 import java.util.Arrays;
 import java.util.List;
 import org.assertj.core.api.SoftAssertions;
@@ -9,8 +10,8 @@ import org.testng.annotations.Test;
 
 public class HomePageTest extends AbstractTest {
 
-    @Test
-    public void testHomePage() {
+    @Test(dataProvider = "loginPassword", dataProviderClass = DataProvidersForPageObject.class)
+    public void testHomePage(String login, String password) {
 
         SoftAssertions softly = new SoftAssertions();
 
@@ -22,7 +23,7 @@ public class HomePageTest extends AbstractTest {
         softly.assertThat(homePage.getTitle()).isEqualTo("Home Page");
 
         // 3. Perform login
-        homePage.getHeaderMenu().login();
+        homePage.getHeaderMenu().login(login, password);
 
         // 4. Assert Username is loggined
         softly.assertThat(homePage.getHeaderMenu().getUserName()).isEqualTo("ROMAN IOVLEV");

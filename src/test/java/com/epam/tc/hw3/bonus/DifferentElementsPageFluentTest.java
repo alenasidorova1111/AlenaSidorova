@@ -8,13 +8,14 @@ import org.testng.annotations.Test;
 public class DifferentElementsPageFluentTest extends AbstractTest {
 
     @Test(dataProvider = "twoForcesMetalColor", dataProviderClass = DataProvidersForPageObject.class)
-    public void testDifferentElementsPage(String force1, String force2, String metal, String color) {
+    public void testDifferentElementsPage(String force1, String force2, String metal, String color,
+                                          String login, String password) {
 
         SoftAssertions softly = new SoftAssertions();
 
         // 1. Open test site by URL // 3. Perform login
         FluentHomePage fluentPage = new FluentHomePage(webDriver);
-        fluentPage.open().login();
+        fluentPage.open().login(login, password);
 
         // 2. Assert Browser title
         softly.assertThat(fluentPage.getTitle()).isEqualTo("Home Page");

@@ -10,7 +10,8 @@ import org.testng.annotations.Test;
 public class DifferentElementsPageTest extends AbstractTest {
 
     @Test(dataProvider = "twoForcesMetalColor", dataProviderClass = DataProvidersForPageObject.class)
-    public void testDifferentElementsPage(String force1, String force2, String metal, String color) {
+    public void testDifferentElementsPage(String force1, String force2, String metal, String color,
+                                          String login, String password) {
 
         SoftAssertions softly = new SoftAssertions();
 
@@ -22,7 +23,7 @@ public class DifferentElementsPageTest extends AbstractTest {
         softly.assertThat(homePage.getTitle()).isEqualTo("Home Page");
 
         // 3. Perform login
-        homePage.getHeaderMenu().login();
+        homePage.getHeaderMenu().login(login, password);
 
         // 4. Assert Username is loggined
         softly.assertThat(homePage.getHeaderMenu().getUserName()).isEqualTo("ROMAN IOVLEV");

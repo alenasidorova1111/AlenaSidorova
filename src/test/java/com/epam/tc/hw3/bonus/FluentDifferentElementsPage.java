@@ -33,7 +33,7 @@ public class FluentDifferentElementsPage extends AbstractPage {
         wait.until(visibilityOfAllElements(checkBoxes))
             .stream()
             .filter(i -> i.getText().contains(boxName))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
         return this;
     }
 
@@ -41,7 +41,7 @@ public class FluentDifferentElementsPage extends AbstractPage {
         wait.until(visibilityOfAllElements(radioButtons))
             .stream()
             .filter(i -> i.getText().contains(radioName))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
         return this;
     }
 
@@ -51,7 +51,7 @@ public class FluentDifferentElementsPage extends AbstractPage {
         wait.until(visibilityOfAllElements(dropdownColors))
             .stream()
             .filter(i -> i.getText().contains(color))
-            .collect(Collectors.toList()).stream().findFirst().get().click();
+            .collect(Collectors.toList()).stream().findFirst().orElseThrow().click();
         return this;
     }
 

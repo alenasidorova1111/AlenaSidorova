@@ -44,11 +44,11 @@ public class FluentHomePage extends AbstractPage {
         return this;
     }
 
-    public FluentHomePage login() {
+    public FluentHomePage login(String name, String password) {
         wait.until(visibilityOf(signInIcon)).click();
         webDriver.switchTo().activeElement();
-        wait.until(visibilityOf(loginField)).sendKeys(DataProvidersForPageObject.getProperty("login"));
-        wait.until(visibilityOf(passwordField)).sendKeys(DataProvidersForPageObject.getProperty("password"));
+        wait.until(visibilityOf(loginField)).sendKeys(name);
+        wait.until(visibilityOf(passwordField)).sendKeys(password);
         wait.until(visibilityOf(signInButton)).click();
         return this;
     }

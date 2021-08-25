@@ -38,7 +38,7 @@ public class HomePage extends AbstractPage {
     }
 
     public void goToIFrame() {
-        webDriver.switchTo().frame("frame");
+        webDriver.switchTo().frame(interactiveFrame);
     }
 
     public void exitIFrame() {
