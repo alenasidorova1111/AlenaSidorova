@@ -1,19 +1,21 @@
-package com.epam.tc.hw7.tests;
+package com.epam.tc.hw7;
 
 import static com.epam.jdi.light.driver.WebDriverUtils.killAllSeleniumDrivers;
-import static com.epam.jdi.light.elements.init.PageFactory.initElements;
+import static com.epam.jdi.light.elements.init.PageFactory.initSite;
 
 import com.epam.tc.hw7.site.Site;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 public abstract class AbstractTest {
-    @BeforeSuite
+    @BeforeTest(alwaysRun = true)
     public void setUp() {
-        initElements(Site.class);
+        initSite(Site.class);
     }
 
-    @AfterSuite
+    @AfterTest(alwaysRun = true)
     public void tearDown() {
         killAllSeleniumDrivers();
     }

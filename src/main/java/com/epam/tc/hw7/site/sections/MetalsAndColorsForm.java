@@ -7,6 +7,7 @@ import com.epam.jdi.light.elements.pageobjects.annotations.locators.Css;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.JDropdown;
 import com.epam.jdi.light.elements.pageobjects.annotations.locators.UI;
 import com.epam.jdi.light.ui.html.elements.common.Button;
+import com.epam.jdi.light.ui.html.elements.common.Checkbox;
 import com.epam.jdi.light.ui.html.elements.complex.RadioButtons;
 import com.epam.tc.hw7.entities.MetalsAndColorsData;
 
@@ -36,15 +37,21 @@ public class MetalsAndColorsForm extends Form<MetalsAndColorsData> {
     public static Dropdown vegetablesMultiDropdown;
     @UI("[id=submit-button]")
     public Button submit;
+    @Css("[type=checkbox][checked=\"checked\"]")
+    public Checkbox selectedVegetable;
 
     @Override
     public void fill(MetalsAndColorsData metalsAndColors) {
-        summaryFirstLine.select(metalsAndColors.getSummary().get(0));
-        summarySecondLine.select(metalsAndColors.getSummary().get(1));
+        summaryFirstLine.select(metalsAndColors.getSummary().get(0).toString());
+        summarySecondLine.select(metalsAndColors.getSummary().get(1).toString());
         metalsAndColors.getElements().forEach(elementsChecklist::select);
         colors.select(metalsAndColors.getColor());
         metals.select(metalsAndColors.getMetals());
         vegetable.click();
+        if (selectedVegetable.isDisplayed()) {
+            vegetablesMultiDropdown.select("Vegetables");
+        }
+        //vegetablesMultiDropdown.select("Vegetables");
         metalsAndColors.getVegetables().forEach(vegetablesMultiDropdown::select);
     }
 

@@ -5,13 +5,13 @@ import java.util.List;
 
 public class MetalsAndColorsData extends DataClass<MetalsAndColorsData> {
 
-    private List<String> summary;
+    private List<Integer> summary;
     private List<String> elements;
     private String color;
     private String metals;
     private List<String> vegetables;
 
-    public List<String> getSummary() {
+    public List<Integer> getSummary() {
         return summary;
     }
 

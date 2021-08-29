@@ -1,27 +1,34 @@
-package com.epam.tc.hw7.tests;
+package com.epam.tc.hw7;
 
 import static com.epam.tc.hw7.site.Site.homePage;
 import static com.epam.tc.hw7.site.Site.metalsAndColorsPage;
 import static com.epam.tc.hw7.site.pages.HomePage.headerMenu;
 import static com.epam.tc.hw7.site.pages.HomePage.loginForm;
 import static com.epam.tc.hw7.site.pages.HomePage.signInIcon;
+import static com.epam.tc.hw7.site.pages.HomePage.userName;
 import static com.epam.tc.hw7.site.pages.MetalsAndColorsPage.metalsAndColorsForm;
-import static com.epam.tc.hw7.tests.DataProviders.DEFAULT_USER;
 import static org.testng.Assert.assertEquals;
 
 import com.epam.tc.hw7.entities.MetalsAndColorsData;
+import com.epam.tc.hw7.utils.DataProviders;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class MetalsAndColorsPageTest extends AbstractTest {
+public class TestMetalsAndColorsPage extends AbstractTest {
 
-    @Test(dataProvider = "metalsAndColorsDataSet", dataProviderClass = DataProviders.class)
-    public void testMetalsAndColorsPage(MetalsAndColorsData metalsAndColors) {
-
+    @BeforeTest
+    public void login() {
         homePage.open();
         homePage.checkOpened();
 
         signInIcon.click();
-        loginForm.loginAs(DEFAULT_USER);
+        loginForm.loginAs(DataProviders.DEFAULT_USER);
+
+        userName.is().text(DataProviders.DEFAULT_USER.fullName);
+    }
+
+    @Test(dataProvider = "metalsAndColorsDataSet", dataProviderClass = DataProviders.class)
+    public void testMetalsAndColorsPage(MetalsAndColorsData metalsAndColors) {
 
         headerMenu.select("Metals & Colors");
         metalsAndColorsPage.checkOpened();
@@ -32,6 +39,5 @@ public class MetalsAndColorsPageTest extends AbstractTest {
         assertEquals(metalsAndColorsPage.getResult(),
             metalsAndColorsPage.getExpectedResultFromMetalsAndColorsData(metalsAndColors));
 
-        homePage.logout();
     }
 }

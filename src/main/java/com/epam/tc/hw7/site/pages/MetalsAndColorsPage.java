@@ -29,7 +29,7 @@ public class MetalsAndColorsPage extends WebPage {
         List<String> expectedResult = new ArrayList<>();
 
         expectedResult.add(format("Summary: %s", (
-            Integer.parseInt(data.getSummary().get(0)) + Integer.parseInt(data.getSummary().get(1)))));
+            data.getSummary().get(0) + data.getSummary().get(1))));
         expectedResult.add(format("Elements: %s", join(", ", data.getElements())));
         expectedResult.add(format("Color: %s", data.getColor()));
         expectedResult.add(format("Metal: %s", data.getMetals()));
