@@ -48,10 +48,7 @@ public class MetalsAndColorsForm extends Form<MetalsAndColorsData> {
         colors.select(metalsAndColors.getColor());
         metals.select(metalsAndColors.getMetals());
         vegetable.click();
-        if (selectedVegetable.isDisplayed()) {
-            vegetablesMultiDropdown.select("Vegetables");
-        }
-        //vegetablesMultiDropdown.select("Vegetables");
+        vegetablesMultiDropdown.select("Vegetables");
         metalsAndColors.getVegetables().forEach(vegetablesMultiDropdown::select);
     }
 

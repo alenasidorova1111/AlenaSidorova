@@ -1,6 +1,10 @@
 package com.epam.tc.hw7.entities;
 
+import static java.lang.String.format;
+import static java.lang.String.join;
+
 import com.epam.jdi.tools.DataClass;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MetalsAndColorsData extends DataClass<MetalsAndColorsData> {
@@ -29,5 +33,18 @@ public class MetalsAndColorsData extends DataClass<MetalsAndColorsData> {
 
     public List<String> getVegetables() {
         return vegetables;
+    }
+
+    public List<String> getExpectedResultFromMetalsAndColorsData(MetalsAndColorsData data) {
+        List<String> expectedResult = new ArrayList<>();
+
+        expectedResult.add(format("Summary: %s", (
+            data.getSummary().get(0) + data.getSummary().get(1))));
+        expectedResult.add(format("Elements: %s", join(", ", data.getElements())));
+        expectedResult.add(format("Color: %s", data.getColor()));
+        expectedResult.add(format("Metal: %s", data.getMetals()));
+        expectedResult.add(format("Vegetables: %s", join(", ", data.getVegetables())));
+
+        return expectedResult;
     }
 }

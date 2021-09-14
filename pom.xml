@@ -23,10 +23,8 @@
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <checkstyle.version>8.42</checkstyle.version>
-        <selenium-java.version>3.141.59</selenium-java.version>
         <slf4j-simple.version>1.7.30</slf4j-simple.version>
         <aspectj.version>1.9.5</aspectj.version>
-        <webdrivermanager.version>4.4.3</webdrivermanager.version>
         <allure-testng.version>2.14.0</allure-testng.version>
         <allure-maven.version>2.10.0</allure-maven.version>
         <lombok.version>1.18.20</lombok.version>
@@ -151,11 +149,6 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j-simple.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>calculator</groupId>
             <artifactId>calculatorapp</artifactId>
@@ -163,18 +156,6 @@
             <version>1.0</version>
             <systemPath>${project.basedir}/src/main/resources/calculator-1.0.jar</systemPath>
         </dependency>
-        <!--<dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium-java.version}</version>
-            <scope>test</scope>
-        </dependency>-->
-        <!--<dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>${webdrivermanager.version}</version>
-            <scope>test</scope>
-        </dependency>-->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
