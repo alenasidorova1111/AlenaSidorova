@@ -5,7 +5,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllE
 import io.qameta.allure.Step;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.assertj.core.api.SoftAssertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -64,12 +63,5 @@ public class DifferentElementsPage extends AbstractPage {
     public String getLogBodyText() {
         return wait.until(visibilityOfAllElements(logSection))
                    .stream().map(WebElement::getText).collect(Collectors.joining(""));
-    }
-
-    @Step("Check info about {force1} / {force2} / {metal} / {color} items are displayed in log section")
-    public void testInfoAboutItemsAreSelected(String force1, String force2, String metal, String color) {
-        SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(this.getLogBodyText()).contains(force1, force2, metal, color);
-        softly.assertAll();
     }
 }
